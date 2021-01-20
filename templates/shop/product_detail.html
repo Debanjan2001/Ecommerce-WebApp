@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+        Name- {{ product.name }} Price {{ product.price }}
+
+        {% if user.is_authenticated and user.is_superuser %}
+        <a href="{% url 'shop:delete' product.pk %}">Delete</a>
+        <a href="{% url 'shop:update' product.pk %}">Update</a>
+        {% endif %}
+</body>
+</html>

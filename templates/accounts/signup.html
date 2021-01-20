@@ -1,0 +1,16 @@
+{% include "navbar/navbar.html" %}
+<title>Signup</title>
+
+<div class="container">
+
+    {% if username_exists %}
+        There is another person with same username. Please try again with different username.
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" name="submit" value="Register">
+    </form>
+
+</div>

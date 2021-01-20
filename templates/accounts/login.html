@@ -1,0 +1,22 @@
+{% include "navbar/navbar.html" %}
+<title>Login</title>
+
+<div class="container">
+
+    {% if error %}
+        ENTERED USERNAME OR PASSWORD IS WRONG
+    {% endif %}
+    <form method="POST">
+       {% csrf_token %}
+            
+        <label for="username">Username: </label>
+        <input type="text" name="username">
+        <p></p>
+        <label for="password">Password: </label>
+        <input type="text" name="password">
+        <p></p>
+
+        <input type="submit" name="submit" value="Login">
+    </form>
+</div>
+        

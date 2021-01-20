@@ -1,0 +1,13 @@
+{% include "navbar/navbar.html" %}
+
+{% block base_template %}
+{% if result %}
+    {% for product in result %}
+        {{ product.name }}
+      
+    {% endfor %}
+{% else %}
+
+{% endif %}
+  
+{% endblock base_template %}

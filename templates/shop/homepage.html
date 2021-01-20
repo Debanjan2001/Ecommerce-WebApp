@@ -1,0 +1,31 @@
+{% include "navbar/navbar.html" %}
+{% load static %}
+
+{% block base_template %}
+<link rel="stylesheet" href="{% static 'shop/home.css' %}">
+
+    <div class="container">
+    <title>Homepage </title>
+
+    LISTVIEW
+    <p></p>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+        </tr>
+        {% for product in object_list %}
+        <tr>
+            <td>
+                <a href="{% url 'shop:detailpage' product.pk %}">{{ product.name }}</a> 
+            </td>
+           <td>{{ product.price }}</td>    
+        </tr>
+        {% endfor %}
+    </table>
+    </div>      		
+  		
+
+
+
+{% endblock %}
