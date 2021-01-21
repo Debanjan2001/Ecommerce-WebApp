@@ -1,31 +1,100 @@
-{% include "navbar/navbar.html" %}
+{% extends "navbar/navbar.html" %}
 {% load static %}
 
 {% block base_template %}
-<link rel="stylesheet" href="{% static 'shop/home.css' %}">
+<title>Homepage </title>
+        
+      
+<div class="container">
+    <div class="row row-cols-4 row-cols-sm-4 g-4" >
+        <div class="col">
+          <div class="card">
+            <img src="{% static 'images/1.jpeg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+            <div class="card">
+              <img src="{% static 'images/1.jpeg' %}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              </div>
+            </div>
+          </div>
+        <div class="col">
+            <div class="card">
+              <img src="{% static 'images/2.jpeg' %}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <img src="{% static 'images/2.jpeg' %}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              </div>
+            </div>
+          </div>
+        <div class="col">
+          <div class="card">
+            <img src="{% static 'images/3.jpeg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+          </div>
+        </div>
 
-    <div class="container">
-    <title>Homepage </title>
+        <div class="col">
+            <div class="card">
+              <img src="{% static 'images/3.jpeg' %}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              </div>
+            </div>
+          </div>
 
+          <div class="col">
+            <div class="card">
+              <img src="{% static 'images/3.jpeg' %}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              </div>
+            </div>
+          </div>
+       
+      </div>
+
+        
     LISTVIEW
     <p></p>
     <table>
         <tr>
             <th>Name</th>
-            <th>Quantity</th>
+            <th>Price</th>
         </tr>
         {% for product in object_list %}
         <tr>
             <td>
                 <a href="{% url 'shop:detailpage' product.pk %}">{{ product.name }}</a> 
             </td>
-           <td>{{ product.price }}</td>    
+        <td>{{ product.price }}</td>    
         </tr>
         {% endfor %}
     </table>
-    </div>      		
-  		
 
+</div>    
 
+    
 
 {% endblock %}
