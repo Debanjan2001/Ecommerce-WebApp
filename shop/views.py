@@ -34,10 +34,11 @@ def search_text(request):
     if request.method == 'POST':
         text = request.POST.get("search_text")
         result =[]
-        
+    
         for product in Product.objects.all():
-            if re.search(text,product.name) == True:
+            if re.search(text,product.name,re.IGNORECASE):
                 result.append(product) 
+                
         return render(request,'shop/custom_search.html',{'result':result})
     else:
         return render(request,'shop/custom_search.html')

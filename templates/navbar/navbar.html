@@ -9,6 +9,7 @@
 </head>
 <body>
 
+  <b>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,13 +54,13 @@
     
     <form method="POST" class="d-flex" action="{% url 'shop:searching' %}">
       {% csrf_token %}
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_text">
-      <button class="btn btn-outline-success" type="submit" >Search</button>
+      <input class="form-control me-2" type="search" placeholder="Enter something to search" aria-label="Search" name="search_text">
+      <button class="btn btn-success" type="submit" ><b>Search</b></button>
     </form>
         </div>
       </div>
     </nav>
-    
+   </b> 
     <p></p>
 
 

@@ -1,13 +1,37 @@
-{% include "navbar/navbar.html" %}
+{% extends "navbar/navbar.html" %}
+{% load static %}
 
 {% block base_template %}
-{% if result %}
-    {% for product in result %}
-        {{ product.name }}
-        <p></p>
-    {% endfor %}
-{% else %}
 
-{% endif %}
+<div class="container">
+    {% if result %}
+        <div class="row row-cols-4 row-cols-sm-4 g-4" >
+
+            {% for product in result %}
+
+            <div class="col">
+                <div class="card">
+                <img src="{% static 'images/1.jpeg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">
+                    <a href="{% url 'shop:detailpage' product.pk %}">{{ product.name }}</a> 
+                    </h5>
+                    <p class="card-text">
+                    This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                    {{ product.price }}
+                    </p>
+                </div>
+                </div>
+            </div>
+            {% endfor %}
+        
+         </div>
+    
+    {% else %}
+        <div class="alert alert-info" role="alert">
+        <b>OOPS !!! No results based on your query ! </b> <a href="{% url 'shop:homepage' %}" class="alert-link">Return to Homepage</a>.
+        </div>
+    {% endif %}
+</div>
   
-{% endblock base_template %}
+{% endblock %}
