@@ -4,6 +4,25 @@
 {% block base_template %}
 
 <div class="container">
+
+    <div class="alert alert-success" role="alert">
+        {% if search_text %}
+            <h4 class="alert-heading">
+                Showing Search Results for "{{ search_text }}"
+            </h4>
+        {% endif %} 
+        
+        <hr>
+        
+        <h5 class="mb-0">
+        {% if result %}
+            Hope you found what you were looking for  &#128515;
+        {% else %}
+            Oops ! We are sorry. Nothing found based on your search &#128546;
+        {% endif %}
+        </h5>
+
+    </div>
     {% if result %}
         <div class="row row-cols-4 row-cols-sm-4 g-4" >
 
@@ -17,8 +36,7 @@
                     <a href="{% url 'shop:detailpage' product.pk %}">{{ product.name }}</a> 
                     </h5>
                     <p class="card-text">
-                    This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-                    {{ product.price }}
+                    Price : {{ product.price }}
                     </p>
                 </div>
                 </div>
@@ -27,10 +45,6 @@
         
          </div>
     
-    {% else %}
-        <div class="alert alert-info" role="alert">
-        <b>OOPS !!! No results based on your query ! </b> <a href="{% url 'shop:homepage' %}" class="alert-link">Return to Homepage</a>.
-        </div>
     {% endif %}
 </div>
   

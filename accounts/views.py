@@ -27,6 +27,7 @@ def user_login(request):
 
     return render(request,'accounts/login.html')
 
+
 @login_required
 def user_logout(request):
 
@@ -47,12 +48,21 @@ def user_signup(request):
             email = signup_form.cleaned_data['email']
             firstname = signup_form.cleaned_data['firstname']
             lastname = signup_form.cleaned_data['lastname']
+            
+            queryname = User.objects.filter(username=username )
+            querymail = User.objects.filter(email=email)
 
-            queryset = User.objects.all().filter(username=username)
-
-            if len(queryset) > 0:
+            if queryname or querymail:
                 form = SignUpForm()
-                return render(request,'accounts/signup.html',{'username_exists':True,'form':form})
+                username_exists = False
+                email_exists = False
+                if querymail:
+                    email_exists = True
+                if queryname:
+                    username_exists = True
+
+                context_dict={'username_exists':username_exists,'email_exists':email_exists,'form':form}
+                return render(request,'accounts/signup.html',context_dict)
 
             user = User.objects.create_user(username,email,password)
             
@@ -74,9 +84,10 @@ def user_signup(request):
         context = {'form':form}
         return render(request,'accounts/signup.html',context)
 
+def signup_success(request):
+    return render(request,'accounts/signup_success.html')
+
 def profilepage(request):
     profile = Profile.objects.filter(user = request.user)
     return render(request,'accounts/profile.html',{'profile':profile})
 
-def signup_success(request):
-    return render(request,'accounts/signup_success.html')

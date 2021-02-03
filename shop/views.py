@@ -39,7 +39,7 @@ def search_text(request):
             if re.search(text,product.name,re.IGNORECASE):
                 result.append(product) 
                 
-        return render(request,'shop/custom_search.html',{'result':result})
+        return render(request,'shop/custom_search.html',{'search_text':text,'result':result})
     else:
         return render(request,'shop/custom_search.html')
 

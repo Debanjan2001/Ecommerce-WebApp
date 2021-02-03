@@ -4,7 +4,13 @@
 <div class="container">
 
     {% if username_exists %}
-        There is another person with same username. Please try again with different username.
+        <div class="alert alert-danger" role="alert">
+            There is another person with same username. Please try again with different username.
+         </div>
+    {% elif email_exists %}
+        <div class="alert alert-danger" role="alert">
+            There is another person with same email id. Please try again with different email.
+        </div>
     {% endif %}
 
     <form method="POST">
