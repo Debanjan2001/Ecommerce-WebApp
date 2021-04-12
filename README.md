@@ -1,10 +1,4 @@
 # Ecommerce-WebApp
-Built from Scratch using django after getting motivated by two of my friends . Work in progress.
-
-Main Idea is to sell a product using this website and creating an ecommerce system for that purpose.
-
-BEING MADE WITH LOVE USING 
-PYTHON 3.6
-DJANGO 3.1
-POSTGRESQL
-PSYCOPG2
+Trying to implement various features in a web-app that a typical e-commerce platform provides. 
+Currently using django as backend for its beauty and simplicity along with bootstrap5 in the frontend.
+I wish to use React.js to build the frontend in future.
