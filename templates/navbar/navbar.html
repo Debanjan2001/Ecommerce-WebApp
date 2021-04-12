@@ -36,7 +36,7 @@
           </li>
         
           <li class="nav-item">
-            <a class="nav-link" href="{% url "accounts:user_logout" %}"> Logout</a>
+            <a class="nav-link active" href="{% url "accounts:user_logout" %}"> Logout</a>
         </li>
 
           <li class="nav-item">
@@ -52,7 +52,7 @@
 
     </ul>
     
-    <form method="POST" class="d-flex" action="{% url 'shop:searching' %}">
+    <form method="POST" class="d-flex" action="{% url 'shop:search_product' %}">
       {% csrf_token %}
       <input class="form-control me-2" type="search" placeholder="Enter something to search" aria-label="Search" name="search_text">
       <button class="btn btn-success" type="submit" ><b>Search</b></button>

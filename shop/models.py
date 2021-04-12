@@ -7,11 +7,17 @@ from django.urls import reverse
 
 class Product(models.Model):
 
-    name = models.CharField(max_length=50)
-    price= models.IntegerField(default=0)
+    # Name of the product
+    name = models.CharField(max_length=500)
 
-    def get_absolute_url(self):
-        return reverse("product", kwargs={"pk": self.pk})
+    # Price of the product
+    price= models.IntegerField(default=99)
+
+    # Description of the product
+    description = models.TextField(blank=True,max_length=1000)
+
+    # def get_absolute_url(self):
+    #     return reverse("product", kwargs={"pk": self.pk})
     
     def __str__(self):
         return self.name

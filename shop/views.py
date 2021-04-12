@@ -1,6 +1,8 @@
+from django.conf.urls import url
+import shop
 from django.http import request
 from django.http.response import Http404
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls.base import reverse_lazy
 from django.views.generic import TemplateView,CreateView,UpdateView,DeleteView,ListView,DetailView
 from . models import Product
@@ -10,6 +12,7 @@ import re
 class Homepage(ListView):
     model = Product
     template_name = 'shop/homepage.html'
+    context_object_name = 'products'
 
 class detailpage(DetailView):
     model = Product
@@ -19,9 +22,25 @@ class createproduct(CreateView):
     fields = '__all__'
     success_url = reverse_lazy('shop:homepage')
 
-class deleteproduct(DeleteView):
-    model = Product
-    success_url = reverse_lazy('shop:homepage')
+
+# Class Based Delete Operation ... CRU[D]
+
+# class delete_product(DeleteView):
+#     model = Product
+#     success_url = reverse_lazy('shop:homepage')
+
+# Function Based Delete Operation ... CRU[D]
+
+def delete_product(request,pk):
+
+    context = {}
+
+    obj = get_object_or_404(Product,pk = pk)
+    if obj is not None:
+        obj.delete()
+
+    return redirect('shop:homepage')
+
 
 class updateproduct(UpdateView):
     model = Product
@@ -30,7 +49,9 @@ class updateproduct(UpdateView):
     template_name = 'shop/product_update.html'
 
 
-def search_text(request):
+def search_product(request):
+
+    context = {}
     if request.method == 'POST':
         text = request.POST.get("search_text")
         result =[]
@@ -38,10 +59,10 @@ def search_text(request):
         for product in Product.objects.all():
             if re.search(text,product.name,re.IGNORECASE):
                 result.append(product) 
-                
-        return render(request,'shop/custom_search.html',{'search_text':text,'result':result})
-    else:
-        return render(request,'shop/custom_search.html')
+        
+        context['result'] = result
+
+    return render(request,'shop/custom_search.html',context=context)
 
 def cart(request):
     return render(request, 'shop/cart.html')

@@ -20,9 +20,8 @@ def user_login(request):
 
         if user is not None:
             login(request, user)
-        else:
+        else:            
             return render(request,'accounts/login.html',{'error':True})
-            
         return redirect('shop:homepage')
 
     return render(request,'accounts/login.html')

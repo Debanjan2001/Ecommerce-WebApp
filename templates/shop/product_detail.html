@@ -7,9 +7,14 @@
 <body>
         Name- {{ product.name }} Price {{ product.price }}
 
+         <p>
+            Desciption : {{ product.description }}
+        </p>
+
         {% if user.is_authenticated and user.is_superuser %}
         <a href="{% url 'shop:delete' product.pk %}">Delete</a>
         <a href="{% url 'shop:update' product.pk %}">Update</a>
+       
         {% endif %}
 </body>
 </html>
