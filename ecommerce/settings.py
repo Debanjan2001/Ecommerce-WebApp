@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+from django.db.models.fields import BigAutoField
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,6 +42,8 @@ INSTALLED_APPS = [
     'accounts',
     'shop',
 ]
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
