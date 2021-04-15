@@ -1,3 +1,4 @@
+from ecommerce.settings import MEDIA_ROOT, MEDIA_URL
 from accounts.models import Profile
 from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
@@ -10,6 +11,11 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 def user_login(request):
+    print("MEDIA ROOT: ")
+    print(MEDIA_ROOT)
+    print("MEDIA URL: ")
+
+    print(MEDIA_URL)
 
     if request.method == 'POST' :
 

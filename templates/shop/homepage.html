@@ -10,10 +10,14 @@
     <div class="row row-cols-4 row-cols-sm-4 g-4" >
 
       {% for product in products %}
-
+       
         <div class="col">
           <div class="card">
-            <img src="{% static 'images/1.jpeg' %}" class="card-img-top" alt="...">
+            {% if product.image.url is not None %}
+              <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+            {% else %}
+              <img src="" class="card-img-top" alt="...">
+            {% endif %}
             <div class="card-body">
               <h5 class="card-title">
                 <a href="{% url 'shop:detailpage' product.pk %}">{{ product.name }}</a> 

@@ -16,6 +16,9 @@ class Product(models.Model):
     # Description of the product
     description = models.TextField(blank=True,max_length=1000)
 
+    #Image of the product
+    image = models.ImageField(upload_to = 'images/',blank = True)
+
     # def get_absolute_url(self):
     #     return reverse("product", kwargs={"pk": self.pk})
     

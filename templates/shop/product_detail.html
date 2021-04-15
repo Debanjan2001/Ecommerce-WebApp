@@ -11,6 +11,10 @@
             Desciption : {{ product.description }}
         </p>
 
+         <p>
+            Image : {{ product.image.url }}
+        </p>
+
         {% if user.is_authenticated and user.is_superuser %}
         <a href="{% url 'shop:delete' product.pk %}">Delete</a>
         <a href="{% url 'shop:update' product.pk %}">Update</a>
