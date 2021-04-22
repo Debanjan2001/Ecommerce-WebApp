@@ -11,6 +11,7 @@
     {% csrf_token %} 
     <p>Are you sure you want to delete "{{ object }}"?</p> 
     <input type="submit" value="Confirm"> 
+    <a href={% url 'shop:detailpage' product.pk %}>No</a>
 </form> 
 
 </body>

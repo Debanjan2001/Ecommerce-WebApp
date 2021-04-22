@@ -1,25 +1,49 @@
-from django.conf.urls import url
-import shop
-from django.http import request
-from django.http.response import Http404
+from shop.forms import ProductForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls.base import reverse_lazy
-from django.views.generic import TemplateView,CreateView,UpdateView,DeleteView,ListView,DetailView
+from django.views.generic import CreateView,UpdateView,DeleteView,ListView,DetailView
 from . models import Product
 import re
+from accounts.models import Profile
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 # Create your views here.
 
-class Homepage(ListView):
-    model = Product
-    template_name = 'shop/homepage.html'
-    context_object_name = 'products'
+def home_page(request):
+    products = Product.objects.all().order_by('name')
+    paginator = Paginator(products,10)
 
-class detailpage(DetailView):
-    model = Product
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-class createproduct(CreateView):
+    context = {
+        'page_obj':page_obj,
+    }
+
+    return render(request, 'shop/homepage.html', context)
+    
+def product_detailpage(request,pk):
+    context = {}
+    product = get_object_or_404(Product,pk = pk)
+    context['product'] = product
+    context['contains'] = False
+  
+    if request.user.is_authenticated:
+        profile = get_object_or_404(Profile,user = request.user)
+        context['profile'] = profile
+        if profile.products.filter(pk = product.pk) is not None:
+            context['contains'] = True     
+            # print( Count( profile.products.filter(pk = product.pk)) )
+        
+        # print(profile.products.all())  
+    
+    return render(request,'shop/product_detail.html',context)
+
+
+class create_product(CreateView):
     model = Product
-    fields = '__all__'
+    form_class = ProductForm
+    template_name = 'shop/create_product.html'
     success_url = reverse_lazy('shop:homepage')
 
 
@@ -31,18 +55,15 @@ class createproduct(CreateView):
 
 # Function Based Delete Operation ... CRU[D]
 
-def delete_product(request,pk):
+class delete_product(DeleteView):
+    model = Product
+    template_name = 'shop/product_confirm_delete.html'
+    context_object_name = 'product'
 
-    context = {}
+    def get_success_url(self):
+        return reverse_lazy('shop:homepage')
 
-    obj = get_object_or_404(Product,pk = pk)
-    if obj is not None:
-        obj.delete()
-
-    return redirect('shop:homepage')
-
-
-class updateproduct(UpdateView):
+class update_product(UpdateView):
     model = Product
     fields = '__all__'
     success_url = reverse_lazy('shop:homepage')
@@ -64,5 +85,31 @@ def search_product(request):
 
     return render(request,'shop/custom_search.html',context=context)
 
+
 def cart(request):
-    return render(request, 'shop/cart.html')
+    context = {}
+    profile = Profile.objects.get( user = request.user )
+    total_cost = 0
+    for product in profile.products.all():
+        total_cost += product.price
+    context = {
+        'profile': profile,
+        'products' : profile.products.all(),
+        'cost': total_cost,
+    }
+    return render(request, 'shop/cart.html',context)
+
+def add_to_cart(request,pk):
+
+    product = get_object_or_404(Product,pk = pk)
+    profile = Profile.objects.get( user = request.user )
+    profile.products.add(product)
+    return redirect('shop:cart')
+
+def remove_from_cart(request,pk):
+
+    product = get_object_or_404(Product,pk = pk)
+    profile = Profile.objects.get( user = request.user )
+    profile.products.remove(product)
+
+    return redirect('shop:cart')

@@ -1,7 +1,7 @@
 from ecommerce.settings import MEDIA_ROOT, MEDIA_URL
 from accounts.models import Profile
 from django.http.response import HttpResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from . forms import  SignUpForm
@@ -11,11 +11,6 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 def user_login(request):
-    print("MEDIA ROOT: ")
-    print(MEDIA_ROOT)
-    print("MEDIA URL: ")
-
-    print(MEDIA_URL)
 
     if request.method == 'POST' :
 
@@ -93,6 +88,10 @@ def signup_success(request):
     return render(request,'accounts/signup_success.html')
 
 def profilepage(request):
-    profile = Profile.objects.filter(user = request.user)
-    return render(request,'accounts/profile.html',{'profile':profile})
+    profile = get_object_or_404(Profile,user = request.user)
+    context = {
+        'user' : request.user,
+        'profile' : profile,
+    }
+    return render(request,'accounts/profile.html',context)
 

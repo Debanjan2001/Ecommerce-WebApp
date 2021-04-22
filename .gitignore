@@ -1,8 +1,3 @@
-accounts/__pycache__/*
-accounts/migrations/*
-shop/__pycache__/*
-shop/migrations/*
-ecommerce/__pycache__/*
 .idea/*
 .vscode/*
 venv/*

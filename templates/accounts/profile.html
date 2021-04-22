@@ -1,0 +1,15 @@
+{% extends "navbar/navbar.html" %}
+{% load static %}
+
+{% block base_template %}
+
+{{ profile.first_name }}
+{{ user.username }}
+{{ user.email }}
+
+{% if user.is_superuser %}
+<a href = {% url 'shop:create' %}>Create New Entry for product </a>
+{% endif %}
+
+
+{% endblock %}

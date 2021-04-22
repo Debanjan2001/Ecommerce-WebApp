@@ -13,7 +13,7 @@ class Profile(models.Model):
 
     last_name = models.CharField(max_length=100,blank=True)
 
-    prod = models.ManyToManyField(Product,blank=True)
+    products = models.ManyToManyField(Product,blank=True)
 
     def set(self,*args, **kwargs):
         self.first_name = kwargs['first_name']

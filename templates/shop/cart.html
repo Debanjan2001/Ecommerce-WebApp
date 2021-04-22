@@ -1,0 +1,25 @@
+{% extends "navbar/navbar.html" %}
+{% load static %}
+
+{% block base_template %}
+
+{% for product in products %}
+
+    Name: {{ product.name }}
+    <br>
+    Desciption : {{ product.description }}
+    <br>
+    <a href="{% url 'shop:remove_from_cart' product.pk %}">remove_from_cart </a>
+    <br>
+    <br>
+{% endfor %}
+
+{% if cost %}
+    Price: {{ cost }}
+{% endif %}
+
+Checkout:
+
+<a href = "{% url 'shop:homepage' %}">continue shopping</a>
+
+{% endblock %}
