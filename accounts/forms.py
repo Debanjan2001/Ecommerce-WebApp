@@ -1,11 +1,20 @@
 from django import forms
-from . models import Profile
 from django.contrib.auth.models import User
+from django import forms
 
-class SignUpForm(forms.Form):
-    username = forms.CharField(max_length=250)
-    firstname = forms.CharField(max_length=250)
-    lastname = forms.CharField(max_length=250)
-    password = forms.CharField(widget=forms.PasswordInput)
-    bio = forms.CharField(max_length=200,required=False)
-    email = forms.EmailField(max_length=254,required=False)
+class SignUpForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.Meta.required:
+            self.fields[field].required = True
+    
+    class Meta:
+        model = User
+        fields = ('username','first_name','last_name','email','password')   
+        required = ('username','first_name','last_name','email','password')
+       
+class ActivationForm(forms.Form):
+    username = forms.CharField(label = 'Username', max_length=150,required=False)
+    email = forms.CharField(label = 'Email',max_length=150,required=False)

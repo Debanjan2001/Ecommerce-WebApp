@@ -1,0 +1,15 @@
+{% extends 'navbar/navbar.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Activation Message{% endblock title %}
+
+{% block base_template %}
+
+    Only one of the two fields are necessary for activation.
+    <form method = "POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type ="submit" value ="Activate">
+    </form>
+
+{% endblock base_template %}

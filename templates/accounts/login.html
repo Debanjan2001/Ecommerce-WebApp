@@ -1,17 +1,34 @@
-{% include "navbar/navbar.html" %}
-<title>Login</title>
+{% extends "navbar/navbar.html" %}
+{% load static %}
 
+{% block title %} Login {% endblock title %}
+
+{% block base_template %}
 <div class="container">
 
     {% if error %}
     <div class="alert alert-danger" role="alert">
-        ENTERED USERNAME OR PASSWORD IS WRONG
+       <h4>FAILED !</h4>
+       <h6>
+       <p> Hints: </p> 
+       <ul>
+       <li>Username or password might be wrong.</li>
+       <li>If you are already registered and have forgotten credentials, go to Login page and select 'Forgot Password'.</li>
+       <li>If your email doesn't exist anymore or you have forgotten, please register with a new email.</li>
+       <li>Probably you created your account but never confirmed it from email.Please check your email(including spam).If link has expired or you deleted it, click 'Activate Account' below</li>
+       </ul>
+       </h6> 
     </div>
-        
+
+    {% elif message %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>    
     {% endif %}
+
     <form method="POST">
        {% csrf_token %}
-            
+        
         <label for="username">Username: </label>
         <input type="text" name="username">
         <p></p>
@@ -20,6 +37,10 @@
         <p></p>
 
         <input type="submit" name="submit" value="Login">
+        <a href="{% url 'password_reset' %}">Forgot Password</a>
+        <a href="{% url 'accounts:manual_activation' %}">Activate</a>
+
     </form>
 </div>
         
+{% endblock  %}

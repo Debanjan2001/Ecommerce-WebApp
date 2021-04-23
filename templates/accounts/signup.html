@@ -1,6 +1,10 @@
-{% include "navbar/navbar.html" %}
-<title>Signup</title>
+{% extends "navbar/navbar.html" %}
+{% block title %}Sign-Up{% endblock title %}
 
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block base_template %}
 <div class="container">
 
     {% if username_exists %}
@@ -15,8 +19,9 @@
 
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
         <input type="submit" name="submit" value="Register">
     </form>
 
 </div>
+{% endblock base_template %}

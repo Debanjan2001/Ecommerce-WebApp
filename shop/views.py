@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from shop.forms import ProductForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls.base import reverse_lazy
@@ -5,7 +6,8 @@ from django.views.generic import CreateView,UpdateView,DeleteView,ListView,Detai
 from . models import Product
 import re
 from accounts.models import Profile
-from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required,permission_required
 from django.core.paginator import Paginator
 # Create your views here.
 
@@ -39,8 +41,8 @@ def product_detailpage(request,pk):
     
     return render(request,'shop/product_detail.html',context)
 
-
-class create_product(CreateView):
+class create_product(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
+    permission_required = 'is_superuser'
     model = Product
     form_class = ProductForm
     template_name = 'shop/create_product.html'
@@ -55,7 +57,8 @@ class create_product(CreateView):
 
 # Function Based Delete Operation ... CRU[D]
 
-class delete_product(DeleteView):
+class delete_product(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
+    permission_required = 'is_superuser'
     model = Product
     template_name = 'shop/product_confirm_delete.html'
     context_object_name = 'product'
@@ -63,7 +66,8 @@ class delete_product(DeleteView):
     def get_success_url(self):
         return reverse_lazy('shop:homepage')
 
-class update_product(UpdateView):
+class update_product(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
+    permission_required = 'is_superuser'   
     model = Product
     fields = '__all__'
     success_url = reverse_lazy('shop:homepage')
@@ -85,7 +89,7 @@ def search_product(request):
 
     return render(request,'shop/custom_search.html',context=context)
 
-
+@login_required
 def cart(request):
     context = {}
     profile = Profile.objects.get( user = request.user )
@@ -99,6 +103,7 @@ def cart(request):
     }
     return render(request, 'shop/cart.html',context)
 
+@login_required
 def add_to_cart(request,pk):
 
     product = get_object_or_404(Product,pk = pk)
@@ -106,6 +111,7 @@ def add_to_cart(request,pk):
     profile.products.add(product)
     return redirect('shop:cart')
 
+@login_required
 def remove_from_cart(request,pk):
 
     product = get_object_or_404(Product,pk = pk)

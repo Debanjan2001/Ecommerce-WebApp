@@ -1,5 +1,4 @@
-from django.db.models.fields import IntegerField
-from django.db.models.fields.related import OneToOneField
+from django.utils import timezone
 from shop.models import Product
 from django.db import models
 from django.contrib.auth.models import User
@@ -13,16 +12,15 @@ class Profile(models.Model):
 
     last_name = models.CharField(max_length=100,blank=True)
 
+    activation_date = models.DateTimeField(blank=True,default=timezone.now)
+    
     products = models.ManyToManyField(Product,blank=True)
 
     def set(self,*args, **kwargs):
         self.first_name = kwargs['first_name']
         self.last_name = kwargs['last_name']
-      
+        self.activation_date = timezone.now()
 
-    # email = models.EmailField( max_length=254)
-
-    # bio = models.TextField()
 
     def __str__(self):
         return self.user.username

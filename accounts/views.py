@@ -1,12 +1,19 @@
-from ecommerce.settings import MEDIA_ROOT, MEDIA_URL
 from accounts.models import Profile
-from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, render,redirect
+from django.urls import reverse,reverse_lazy
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from . forms import  SignUpForm
+from . forms import  ActivationForm, SignUpForm
 from . models import Profile
 from django.contrib.auth.models import User
+
+#Email imports
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
 
 # Create your views here.
 
@@ -18,7 +25,6 @@ def user_login(request):
         password = request.POST['password']
         
         user = authenticate(request, username = username, password = password)
-
         if user is not None:
             login(request, user)
         else:            
@@ -34,20 +40,21 @@ def user_logout(request):
     logout(request)
     return redirect('shop:homepage')
 
-
 def user_signup(request):
 
-    if(request.method == 'POST'):
+    form = None
 
-        signup_form = SignUpForm(request.POST)
+    if request.method == 'POST':
+
+        form = SignUpForm(request.POST)
           
-        if signup_form.is_valid():
+        if form.is_valid():
 
-            username = signup_form.cleaned_data['username']
-            password = signup_form.cleaned_data['password']
-            email = signup_form.cleaned_data['email']
-            firstname = signup_form.cleaned_data['firstname']
-            lastname = signup_form.cleaned_data['lastname']
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            email = form.cleaned_data['email']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
             
             queryname = User.objects.filter(username=username )
             querymail = User.objects.filter(email=email)
@@ -60,32 +67,113 @@ def user_signup(request):
                     email_exists = True
                 if queryname:
                     username_exists = True
-
                 context_dict={'username_exists':username_exists,'email_exists':email_exists,'form':form}
-                return render(request,'accounts/signup.html',context_dict)
+                return render(request,'accounts/signup.html',context = context_dict)
 
-            user = User.objects.create_user(username,email,password)
-            
-            user.first_name = firstname
-            user.last_name = lastname
-
-            # user.set_password(password)
-            profile = Profile.objects.create(user =user)
-            profile.set(first_name = firstname,last_name = lastname)
-            profile.save()
+            user = User.objects.create(username = username,email = email)
+            user.set_password(password)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.is_active=False
             user.save()
+
+            current_site = get_current_site(request)
+            mail_subject='Activate Your Account at Debanjan:Ecommerce-WebApp'
+            message = render_to_string('registration/activate_account.html',{
+                'user':user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+
+            send_mail = form.cleaned_data.get('email')
+            email = EmailMessage(mail_subject,message,to = [send_mail])
+            email.send()
             
-            login(request,user)
-
-            return redirect('accounts:signup_success')
-
+            return render(request,'accounts/confirm_account_message.html',context={})
+            
     else:
         form = SignUpForm()
-        context = {'form':form}
-        return render(request,'accounts/signup.html',context)
+    
+    context = {'form':form}
+    return render(request,'accounts/signup.html',context)
+
 
 def signup_success(request):
     return render(request,'accounts/signup_success.html')
+
+def signup_failure(request):
+    return render(request,'accounts/signup_failure.html')
+
+
+def confirm_account_message(request):
+    return render(request,'accounts/confirm_account_message.html')
+
+def activate_account(request,uidb64,token):
+    uid = urlsafe_base64_decode(uidb64).decode()
+    user = get_object_or_404(User,pk = uid)
+    if user.is_active == False and default_token_generator.check_token(user,token):
+        user.is_active = True
+        profile = Profile.objects.create(user =user)
+        profile.set(first_name = user.first_name,last_name = user.last_name)
+        profile.save()
+        user.save()
+        return redirect('accounts:signup_success')
+    else:
+        return redirect('accounts:signup_failure')
+
+
+def manual_activation_failure(request):
+    return render(request,'accounts/manual_activation_failure.html')
+
+def manually_activate_account(request):
+
+    form = None
+
+    if request.method == 'POST':
+
+        form = ActivationForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+
+            user = None
+            if len(username)>0:
+                user = User.objects.get(username = username)
+            if len(email)>0 and user is None:
+                user = User.objects.get(email= email)
+
+            if user is None:
+                return redirect('accounts:manual_activation_failure')
+
+            current_site = get_current_site(request)
+            mail_subject='Activate Your Account at Debanjan:Ecommerce-WebApp'
+            message = render_to_string('registration/activate_account.html',{
+                'user':user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+
+            send_mail = user.email
+            email = EmailMessage(mail_subject,message,to = [send_mail])
+            email.send()
+
+            return redirect('accounts:confirm_account_message')
+
+        else:
+            form = ActivationForm()
+
+    else:
+
+        form = ActivationForm()
+
+    return render(request,'accounts/manual_activation.html',context = {'form':form})
+
+
+
+  
+
 
 def profilepage(request):
     profile = get_object_or_404(Profile,user = request.user)
@@ -94,4 +182,3 @@ def profilepage(request):
         'profile' : profile,
     }
     return render(request,'accounts/profile.html',context)
-
