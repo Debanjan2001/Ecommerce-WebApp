@@ -1,0 +1,20 @@
+{% extends "navbar/navbar.html" %}
+
+{% block title %}Success{% endblock title %}
+
+{% block base_template %}
+<div class="container">
+    <div class="alert alert-danger" role="alert">
+    
+    <p>Could not activate Account !! it may be already activated</p>
+    <p> Go to login page and try to login</p>
+    <p> If you can not login, click 'Activate Account' and try again</p>
+    <p> If you still face difficulty,contact us by mail.</p>
+
+    <a class = "btn btn-primary "href="{% url 'shop:homepage' %}">Home</a> 
+    <a class="btn btn-success" href="{% url 'accounts:user_login' %}">Login</a>
+
+    </div>
+</div>
+{% endblock base_template %}
+

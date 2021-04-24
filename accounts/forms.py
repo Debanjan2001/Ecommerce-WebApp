@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django import forms
+from django.forms import fields
 
 class SignUpForm(forms.ModelForm):
 
@@ -18,3 +19,10 @@ class SignUpForm(forms.ModelForm):
 class ActivationForm(forms.Form):
     username = forms.CharField(label = 'Username', max_length=150,required=False)
     email = forms.CharField(label = 'Email',max_length=150,required=False)
+
+class UserLoginForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'password',)

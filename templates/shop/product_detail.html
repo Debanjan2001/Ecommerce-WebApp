@@ -12,7 +12,7 @@
         </p>
 
          <p>
-            Image : {{ product.image.url|safe }}
+            Image : {{ product.image|safe }}
         </p>
 
         {% if user.is_authenticated and user.is_superuser %}

@@ -11,13 +11,13 @@ class Product(models.Model):
     name = models.CharField(max_length=500)
 
     # Price of the product
-    price= models.IntegerField(default=99)
+    price= models.FloatField(default=0.0)
 
     # Description of the product
     description = models.TextField(blank=True,max_length=1000)
 
     #Image of the product
-    image = models.ImageField(blank = True,null=True,upload_to = 'images/', default='default.png')
+    image = models.ImageField(upload_to = 'images/')
 
     # def get_absolute_url(self):
     #     return reverse("product", kwargs={"pk": self.pk})

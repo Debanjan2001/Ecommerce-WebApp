@@ -1,12 +1,18 @@
-{% include "navbar/navbar.html" %}
+{% extends "navbar/navbar.html" %}
 
+{% block title %}Success{% endblock title %}
+
+{% block base_template %}
 <div class="container">
     <div class="alert alert-success" role="alert">
-    SUCCESS!!
-    {{ message }}
-    <p></p>
-    <p></p>
-    <a href="{% url 'shop:homepage' %}">Click here</a> to go to homepage.
+    
+    <p>Sucessfully Activated Account !!</p>
+    <p>Login to continue shopping </p>
+
+    <a class = "btn btn-primary "href="{% url 'shop:homepage' %}">Home</a> 
+    <a class="btn btn-success" href="{% url 'accounts:user_login' %}">Login</a>
 
     </div>
 </div>
+{% endblock base_template %}
+

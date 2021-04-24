@@ -5,12 +5,16 @@
 <title>Homepage </title>
         
       
-<div class="container">
+<div class="container jumbotron">
 
-    <div class="row row-cols-3 row-cols-sm-3 g-4" >
+    <div class="row" >
 
       {% for product in page_obj %}
-        <div class="col" >
+        {% if forloop.counter0|divisibleby:3 %}
+        <div class="row" >
+        {% endif %}
+
+        <div class="col-sm-6 col-lg-4 col-md-6" >
           <div class="card">
             {% if product.image.url is not None %}
               <img src="{{ product.image.url }}" class="card-img-top" alt="...">
@@ -18,42 +22,52 @@
               <img src="" class="card-img-top" alt="...">
             {% endif %}
             <div class="card-body">
+              <b>
               <h5 class="card-title">
-                {{ product.name }}
+                <b>{{ product.name }}</b>
               </h5>
               <p class="card-text">
-                Price: {{ product.price }}
-                <br>
+                Price: Rs. {{ product.price }}
+              </p> 
+              <p>
                 Do you want to buy this? 
-                <a href="{% url 'shop:detailpage' product.pk %}">Click here</a>
+                <a class="btn btn-primary" href="{% url 'shop:detailpage' product.pk %}">Click here</a>
               </p>
+              </b>
             </div>
           </div>
         </div>
+        
       {% endfor %}
-       
-    </div>
 
-<div class="pagination">
+    </div>
+       
+<br>
+<p>
+<span class="current">
+            <p class="h3">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+        </span></p>
+<div class="pagination ">
+   
     <span class="step-links">
+    <ul class="pagination">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
         {% endif %}
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
+     
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+
         {% endif %}
+  </ul>
+
     </span>
 </div>
         
-</div>    
-
-    
+</div>
 
 {% endblock %}

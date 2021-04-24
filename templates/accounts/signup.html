@@ -5,7 +5,10 @@
 {% load static %}
 
 {% block base_template %}
+
 <div class="container">
+<div class="alert alert-secondary" role="alert">
+
 
     {% if username_exists %}
         <div class="alert alert-danger" role="alert">
@@ -20,8 +23,12 @@
     <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
-        <input type="submit" name="submit" value="Register">
+        <br>
+            <p>
+            <input type="submit" class="btn btn-primary" name="submit" value="Register">
+            </p>
     </form>
 
+</div>
 </div>
 {% endblock base_template %}

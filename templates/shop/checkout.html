@@ -1,0 +1,19 @@
+{% autoescape off %}
+
+Hi, {{ user.username }}
+Congratulations, you have successfully checked out and bought the following products.
+
+{% for product in products %}
+    {{ forloop.counter }}. {{ product.name }} - Rs. {{ product.price }} 
+{% endfor %}
+
+Your total amount is {{ cost }}
+
+Currently I am delivering all of your orders for free because I dont want to play around with payment gateway for these type of webapps.
+
+Hope you enjoyed this automated system of mails. 
+
+Thank you,
+Debanjan Saha
+https://github.com/Debanjan2001/Ecommerce-WebApp
+{% endautoescape %}

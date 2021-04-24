@@ -140,15 +140,12 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+from ecommerce import email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-
-# export EMAIL_HOST_USER=debanjansahadjangobackend@gmail.com
-# export EMAIL_HOST_PASSWORD=testdjango587 
-# echo $EMAIL_HOST_USER
-# echo $EMAIL_HOST_PASSWORD
+EMAIL_HOST_USER = email.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = email.EMAIL_HOST_PASSWORD

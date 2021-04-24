@@ -3,6 +3,10 @@
 
 {% block base_template %}
 
+{% if message is not None %}
+    {{ message }}
+{% endif %}
+
 {% for product in products %}
 
     Name: {{ product.name }}
@@ -21,5 +25,7 @@
 Checkout:
 
 <a href = "{% url 'shop:homepage' %}">continue shopping</a>
+<a href = "{% url 'shop:checkout' %}">Checkout and Pay</a>
+
 
 {% endblock %}

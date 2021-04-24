@@ -1,7 +1,6 @@
-from django.contrib.auth import login
 from shop.forms import ProductForm
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls.base import reverse_lazy
+from django.urls import reverse_lazy,reverse
 from django.views.generic import CreateView,UpdateView,DeleteView,ListView,DetailView
 from . models import Product
 import re
@@ -11,12 +10,22 @@ from django.contrib.auth.decorators import login_required,permission_required
 from django.core.paginator import Paginator
 # Create your views here.
 
+
+# Email sending
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
+
 def home_page(request):
     products = Product.objects.all().order_by('name')
-    paginator = Paginator(products,10)
+    paginator = Paginator(products,9)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+
 
     context = {
         'page_obj':page_obj,
@@ -70,8 +79,8 @@ class update_product(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     permission_required = 'is_superuser'   
     model = Product
     fields = '__all__'
-    success_url = reverse_lazy('shop:homepage')
     template_name = 'shop/product_update.html'
+    success_url = reverse_lazy('shop:homepage')
 
 
 def search_product(request):
@@ -85,7 +94,16 @@ def search_product(request):
             if re.search(text,product.name,re.IGNORECASE):
                 result.append(product) 
         
-        context['result'] = result
+        paginator = Paginator(result,9)
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        context = {
+        'page_obj':page_obj,
+        'search_text':text,
+        'result' : result,
+    }
 
     return render(request,'shop/custom_search.html',context=context)
 
@@ -119,3 +137,35 @@ def remove_from_cart(request,pk):
     profile.products.remove(product)
 
     return redirect('shop:cart')
+
+@login_required
+def checkout(request):
+
+    user = request.user 
+    profile = get_object_or_404(Profile,user = user)
+    products = profile.products.all()
+
+    cost = 0.0
+    for product in products:
+        cost += product.price
+
+    print(len(products))
+    if len(products) == 0:
+        return render(request,'shop/cart.html',context = {'message':'Cart is empty' } )
+
+
+    mail_subject='Order Successful from Debanjans Ecommerce'
+    message = render_to_string('shop/checkout.html',{
+        'user' : user,
+        'products': products,
+        'cost': cost,
+            })
+    send_mail = user.email
+    email = EmailMessage(mail_subject,message,to = [send_mail])
+    email.send()
+
+#   Clean up
+    profile.products.clear()
+    return render(request,'shop/cart.html',context = {'message':'Successfully checked out.Check your email for more details.' } )
+
+   

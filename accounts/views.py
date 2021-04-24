@@ -1,11 +1,11 @@
 from accounts.models import Profile
 from django.shortcuts import get_object_or_404, render,redirect
-from django.urls import reverse,reverse_lazy
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from . forms import  ActivationForm, SignUpForm
+from . forms import  ActivationForm, SignUpForm, UserLoginForm
 from . models import Profile
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 #Email imports
 from django.template.loader import render_to_string
@@ -18,20 +18,25 @@ from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
 # Create your views here.
 
 def user_login(request):
-
+    
     if request.method == 'POST' :
+        
+        form = UserLoginForm(request.POST)
 
         username = request.POST['username']
         password = request.POST['password']
-        
+            
         user = authenticate(request, username = username, password = password)
         if user is not None:
             login(request, user)
-        else:            
-            return render(request,'accounts/login.html',{'error':True})
-        return redirect('shop:homepage')
+            return redirect('shop:homepage')
 
-    return render(request,'accounts/login.html')
+        else:            
+            return render(request,'accounts/login.html',{'form':form,'error':True})
+
+    else:
+        form = UserLoginForm()
+        return render(request,'accounts/login.html',{'form':form})
 
 
 @login_required
@@ -139,12 +144,19 @@ def manually_activate_account(request):
 
             user = None
             if len(username)>0:
-                user = User.objects.get(username = username)
+                try:
+                    user = User.objects.get(username = username)
+                except ObjectDoesNotExist:
+                    return redirect('accounts:manual_activation_failure')
+
             if len(email)>0 and user is None:
-                user = User.objects.get(email= email)
+                try:
+                    user = User.objects.get(email = email)
+                except ObjectDoesNotExist:
+                    return redirect('accounts:manual_activation_failure')
 
             if user is None:
-                return redirect('accounts:manual_activation_failure')
+                return redirect('accounts:signup_failure')
 
             current_site = get_current_site(request)
             mail_subject='Activate Your Account at Debanjan:Ecommerce-WebApp'
@@ -159,7 +171,7 @@ def manually_activate_account(request):
             email = EmailMessage(mail_subject,message,to = [send_mail])
             email.send()
 
-            return redirect('accounts:confirm_account_message')
+            return redirect('accounts:confirm_account')
 
         else:
             form = ActivationForm()

@@ -1,6 +1,7 @@
 {% extends "navbar/navbar.html" %}
 {% load static %}
 
+{% load crispy_forms_tags %}
 {% block title %} Login {% endblock title %}
 
 {% block base_template %}
@@ -26,21 +27,21 @@
         </div>    
     {% endif %}
 
+    <div class="alert alert-secondary" role="alert">
+    
     <form method="POST">
-       {% csrf_token %}
-        
-        <label for="username">Username: </label>
-        <input type="text" name="username">
-        <p></p>
-        <label for="password">Password: </label>
-        <input type="text" name="password">
-        <p></p>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <br>
+        <p><input class="btn btn-primary" type="submit" name="submit" value="Login">
+        <a class="btn btn-primary" href="{% url 'password_reset' %}">Forgot Password</a>
+      
+        </p>
 
-        <input type="submit" name="submit" value="Login">
-        <a href="{% url 'password_reset' %}">Forgot Password</a>
-        <a href="{% url 'accounts:manual_activation' %}">Activate</a>
+        <p>  <a class="btn btn-warning" href="{% url 'accounts:manual_activation' %}">Activate Account</a></p>
 
     </form>
+    </div>
 </div>
         
 {% endblock  %}
