@@ -29,9 +29,7 @@
                         <a  class="btn btn-danger" href="{% url 'shop:delete' product.pk %}">Delete</a>
                     {% endif %}
 
-                    {% if user.is_authenticated %}
-                        <a class="btn btn-primary"  href="{% url 'shop:add_to_cart' product.pk %}">Add to Cart</a>       
-                    {% endif %}
+                    <a class="btn btn-primary"  href="{% url 'shop:add_to_cart' product.pk %}">Add to Cart</a>       
 
                     {% if user_has_product %}
                          <a  class="btn btn-warning" href="{% url 'shop:remove_from_cart' product.pk %}">Remove from Cart</a>

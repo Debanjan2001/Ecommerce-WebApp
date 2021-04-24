@@ -3,7 +3,7 @@ Hi {{ user.username }}. How are you today?
 
 Please Click on the link below to activate your account:
 
-http://{{ domain }}{% url 'accounts:activate_account' uidb64=uid token=token %}
+{{ request.scheme }}://{{ domain }}{% url 'accounts:activate_account' uidb64=uid token=token %}
 If you think you did not create this account, please ignore this email.
 
 Thank you.

@@ -92,6 +92,7 @@ def user_signup(request):
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': default_token_generator.make_token(user),
+                'request':request,
             })
 
             send_mail = form.cleaned_data.get('email')
@@ -171,6 +172,7 @@ def manually_activate_account(request):
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': default_token_generator.make_token(user),
+                'request':request,
             })
 
             send_mail = user.email
