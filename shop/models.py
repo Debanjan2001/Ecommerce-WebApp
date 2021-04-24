@@ -17,10 +17,10 @@ class Product(models.Model):
     description = models.TextField(blank=True,max_length=1000)
 
     #Image of the product
-    image = models.ImageField(upload_to = 'images/')
+    image = models.ImageField(upload_to = 'images/',default = 'images/default.png')
 
-    # def get_absolute_url(self):
-    #     return reverse("product", kwargs={"pk": self.pk})
+    def get_absolute_url(self):
+        return reverse("shop:detailpage", kwargs={"pk": self.pk})
     
     def __str__(self):
         return self.name

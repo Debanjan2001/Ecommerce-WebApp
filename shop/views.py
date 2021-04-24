@@ -1,7 +1,8 @@
+from django.http import request
 from shop.forms import ProductForm
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy,reverse
-from django.views.generic import CreateView,UpdateView,DeleteView,ListView,DetailView
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView,DeleteView
 from . models import Product
 import re
 from accounts.models import Profile
@@ -50,12 +51,30 @@ def product_detailpage(request,pk):
     
     return render(request,'shop/product_detail.html',context)
 
-class create_product(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
-    permission_required = 'is_superuser'
-    model = Product
-    form_class = ProductForm
-    template_name = 'shop/create_product.html'
-    success_url = reverse_lazy('shop:homepage')
+@login_required
+@permission_required('is_superuser')
+def create_product(request):
+
+    if request.method == 'POST':
+
+        form = ProductForm(request.POST,request.FILES)
+        if form.is_valid():
+            product = form.save(commit=False)
+            print(product)
+            image = form.cleaned_data['image']
+            # product = Product.objects.get(pk = product.pk)
+            product.image = image
+            product.save()
+
+            return redirect('shop:homepage')
+
+        else:
+            return render(request,'shop/create_product.html',{ 'form':ProductForm() })
+
+
+    form = ProductForm()
+    return render(request,'shop/create_product.html',{'form':form})
+
 
 
 # Class Based Delete Operation ... CRU[D]
@@ -75,12 +94,30 @@ class delete_product(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
     def get_success_url(self):
         return reverse_lazy('shop:homepage')
 
-class update_product(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
-    permission_required = 'is_superuser'   
-    model = Product
-    fields = '__all__'
-    template_name = 'shop/product_update.html'
-    success_url = reverse_lazy('shop:homepage')
+
+#  CBV does not work here with static media files and ignores the request of FILES
+#  
+@login_required
+@permission_required('is_superuser')
+def update_product(request,pk):
+
+    product = get_object_or_404(Product,pk = pk)
+
+    form = ProductForm(request.POST or None,request.FILES or None,instance = product)
+    if form.is_valid():
+        product = form.save(commit=False)
+        image = form.cleaned_data['image']
+        print(image)
+        if Product.objects.filter(image = image) is not None:
+            product.image = image
+            product.save()
+            
+        return redirect('shop:homepage')
+
+    return render(request,'shop/product_update.html',{ 'form':form })
+
+
+
 
 
 def search_product(request):

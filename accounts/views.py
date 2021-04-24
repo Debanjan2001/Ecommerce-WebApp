@@ -183,10 +183,6 @@ def manually_activate_account(request):
     return render(request,'accounts/manual_activation.html',context = {'form':form})
 
 
-
-  
-
-
 def profilepage(request):
     profile = get_object_or_404(Profile,user = request.user)
     context = {

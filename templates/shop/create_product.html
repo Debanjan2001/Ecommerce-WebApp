@@ -1,13 +1,21 @@
 {% extends "navbar/navbar.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
+{% block title %}Create Product{% endblock title %}
 
 {% block base_template %}
 
-    <form method = "POST">
+
+<div class="container">
+<div class="alert alert-secondary" role="alert">
+
+    <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Create">
+ 
+    {{ form|crispy }}
+    <br>
+    <input class="btn btn-primary" type="submit" value="Create">
     </form>
 
 {% endblock %}

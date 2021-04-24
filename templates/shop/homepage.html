@@ -5,19 +5,17 @@
 <title>Homepage </title>
         
       
-<div class="container jumbotron">
+<div class="container">
 
-    <div class="row" >
+    <div class="row " >
 
       {% for product in page_obj %}
-        {% if forloop.counter0|divisibleby:3 %}
-        <div class="row" >
-        {% endif %}
+        
 
         <div class="col-sm-6 col-lg-4 col-md-6" >
           <div class="card">
             {% if product.image.url is not None %}
-              <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+              <img src="{{ product.image.url }}" class="card-img-top" alt="..." height="200px" width="200px">
             {% else %}
               <img src="" class="card-img-top" alt="...">
             {% endif %}
@@ -37,6 +35,12 @@
             </div>
           </div>
         </div>
+
+        {% if forloop.counter|divisibleby:3 %}
+        </div>
+        <br>
+        <div class="row" >
+        {% endif %}
         
       {% endfor %}
 
