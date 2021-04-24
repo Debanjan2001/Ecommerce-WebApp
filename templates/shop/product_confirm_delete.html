@@ -1,18 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'navbar/navbar.html' %}
+{% load crispy_forms_tags %}
 
-<form method="post">
+{% block title %} Confirm Delete {% endblock title %}
+
+{% block base_template %}
+<div class="container">
+
+<div class="alert alert-secondary" role="alert">
+
+    <form method="post">
     {% csrf_token %} 
-    <p>Are you sure you want to delete "{{ object }}"?</p> 
-    <input type="submit" value="Confirm"> 
-    <a href={% url 'shop:detailpage' product.pk %}>No</a>
-</form> 
+        <p class="alert alert-warning">Are you sure you want to delete "{{ product }}"?</p> 
+        <input class="btn btn-success" type="submit" value="Confirm"> 
+        <a class="btn btn-danger" href={% url 'shop:detailpage' product.pk %}>No</a>
+    </form> 
 
-</body>
-</html>
+</div>
+</div>
+{% endblock base_template %}

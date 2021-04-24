@@ -1,50 +1,32 @@
 {% extends "navbar/navbar.html" %}
 {% load static %}
+{% block title %}Ecommerce-Home{% endblock title %}
 
 {% block base_template %}
-<title>Homepage </title>
-        
-      
+
 <div class="container">
 
-    <div class="row " >
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
 
-      {% for product in page_obj %}
-        
+  {% for product in page_obj %}
 
-        <div class="col-sm-6 col-lg-4 col-md-6" >
-          <div class="card">
-            {% if product.image.url is not None %}
-              <img src="{{ product.image.url }}" class="card-img-top" alt="..." height="200px" width="200px">
-            {% else %}
-              <img src="" class="card-img-top" alt="...">
-            {% endif %}
-            <div class="card-body">
-              <b>
-              <h5 class="card-title">
-                <b>{{ product.name }}</b>
-              </h5>
-              <p class="card-text">
-                Price: Rs. {{ product.price }}
-              </p> 
-              <p>
-                Do you want to buy this? 
-                <a class="btn btn-primary" href="{% url 'shop:detailpage' product.pk %}">Click here</a>
-              </p>
-              </b>
-            </div>
-          </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="{{ product.image.url|safe }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">
+            <p> Price : Rs. {{ product.price }} </p>
+            <p> Do you want to buy this? <a class="btn btn-primary" href="{% url 'shop:detailpage' product.pk %}">Click here</a> </p>
+          </p>
         </div>
-
-        {% if forloop.counter|divisibleby:3 %}
-        </div>
-        <br>
-        <div class="row" >
-        {% endif %}
-        
-      {% endfor %}
-
+      </div>
     </div>
+
+  {% endfor %}
+
+</div>
+
        
 <br>
 <p>
@@ -60,8 +42,6 @@
         <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
         {% endif %}
 
-     
-
         {% if page_obj.has_next %}
         <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
         <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
@@ -72,6 +52,5 @@
     </span>
 </div>
         
-</div>
 
-{% endblock %}
+{% endblock base_template %}

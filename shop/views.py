@@ -38,13 +38,13 @@ def product_detailpage(request,pk):
     context = {}
     product = get_object_or_404(Product,pk = pk)
     context['product'] = product
-    context['contains'] = False
+    context['user_has_product'] = False
   
     if request.user.is_authenticated:
         profile = get_object_or_404(Profile,user = request.user)
         context['profile'] = profile
-        if profile.products.filter(pk = product.pk) is not None:
-            context['contains'] = True     
+        if profile.products.filter(pk = product.pk):
+            context['user_has_product'] = True     
             # print( Count( profile.products.filter(pk = product.pk)) )
         
         # print(profile.products.all())  
@@ -62,7 +62,6 @@ def create_product(request):
             product = form.save(commit=False)
             print(product)
             image = form.cleaned_data['image']
-            # product = Product.objects.get(pk = product.pk)
             product.image = image
             product.save()
 
@@ -107,17 +106,12 @@ def update_product(request,pk):
     if form.is_valid():
         product = form.save(commit=False)
         image = form.cleaned_data['image']
-        print(image)
-        if Product.objects.filter(image = image) is not None:
-            product.image = image
-            product.save()
+        product.image = image
+        product.save()
             
         return redirect('shop:homepage')
 
     return render(request,'shop/product_update.html',{ 'form':form })
-
-
-
 
 
 def search_product(request):

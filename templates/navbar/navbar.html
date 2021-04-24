@@ -5,6 +5,8 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'icon/favicon.png' %}" type="image/icon type">
+
     <!-- CSS only -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
      <title>
@@ -36,7 +38,7 @@
 
         {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'accounts:profile' %}">Welcome  {{ user.username }}</a>
+            <a class="nav-link active" href="{% url 'accounts:profile' %}"> Profile@{{ user.username }}</a>
           </li>
         
           <li class="nav-item">

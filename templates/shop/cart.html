@@ -1,31 +1,79 @@
 {% extends "navbar/navbar.html" %}
 {% load static %}
 
+{% block title %}Cart{% endblock title %}
+
 {% block base_template %}
 
-{% if message is not None %}
-    {{ message }}
-{% endif %}
-
-{% for product in products %}
-
-    Name: {{ product.name }}
-    <br>
-    Desciption : {{ product.description }}
-    <br>
-    <a href="{% url 'shop:remove_from_cart' product.pk %}">remove_from_cart </a>
-    <br>
-    <br>
-{% endfor %}
-
-{% if cost %}
-    Price: {{ cost }}
-{% endif %}
-
-Checkout:
-
-<a href = "{% url 'shop:homepage' %}">continue shopping</a>
-<a href = "{% url 'shop:checkout' %}">Checkout and Pay</a>
+<div class="container">
 
 
+    {% if message is not None %}
+        <p class = "alert alert-danger">{{ message }}</p>
+    {% endif %}
+
+    <div class="card mb-3 border-info">
+    <div class="card-header"><h2>Your Cart</h2></div>
+
+    <div class="card-body">
+        {% if products|length == 0 %}
+            <h5>Empty</h5>
+        {% endif %}
+
+        <table class="table table-dark text-center table-striped">
+        {% if products|length > 0 %}
+            <thead>
+            <tr>
+                <th scope="col">Item #</th>
+                <th scope="col">Item Name</th>
+                <th scope="col">Item Price</th>
+                <th scope="col">Want to Delete?</th>
+            </tr>
+
+            </thead>
+        {% endif %}
+
+        {% for product in products %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</td>
+            <td><a class="link-light" href="{% url 'shop:detailpage' product.pk %}"> {{ product.name }} </a></td>
+            <td>{{ product.price }}</td>
+            <td><a class="btn btn-danger" href="{% url 'shop:remove_from_cart' product.pk %}">Remove</a></td>
+
+        </tr>
+        {% endfor %}
+       
+        </table>
+
+
+
+   
+    
+</div>
+</div>
+
+
+<div class="card mb-3">
+  <div class="card-body">
+  
+    <h5 class="card-title">Pending Bill</h5>
+    <p class="card-text">
+    {% if cost %}
+        <p>Bill Amount: {{ cost }}</p>
+    {% else %}
+        <p>Nothing added in cart</p>
+    {% endif %}
+    </p>
+    <p class="card-text">
+        
+    <p><a class="btn btn-primary" href = "{% url 'shop:homepage' %}">Continue Shopping</a></p>
+    <p><a class="btn btn-warning" href = "{% url 'shop:checkout' %}">Checkout and Pay</a></p>
+
+    </p>
+  </div>
+</div>
+
+
+</div>
+</div>
 {% endblock %}

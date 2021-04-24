@@ -1,7 +1,4 @@
-import abc
 from django.db import models
-from django.db.models.fields import BLANK_CHOICE_DASH
-from django.urls import reverse
 
 # Create your models here.
 
@@ -19,11 +16,9 @@ class Product(models.Model):
     #Image of the product
     image = models.ImageField(upload_to = 'images/',default = 'images/default.png')
 
-    def get_absolute_url(self):
-        return reverse("shop:detailpage", kwargs={"pk": self.pk})
-    
     def __str__(self):
         return self.name
+
 
 
 

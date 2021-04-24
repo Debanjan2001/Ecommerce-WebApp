@@ -25,36 +25,27 @@
 
     </div>
 
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
 
-<div class="row" >
+  {% for product in page_obj %}
 
-       {% for product in page_obj %}
-        <div class="col-sm-6 col-lg-4 col-md-6" >
-          <div class="card">
-            {% if product.image.url is not None %}
-              <img src="{{ product.image.url }}" class="card-img-top" alt="...">
-            {% else %}
-              <img src="" class="card-img-top" alt="...">
-            {% endif %}
-            <div class="card-body">
-              <b>
-              <h5 class="card-title">
-                <b>{{ product.name }}</b>
-              </h5>
-              <p class="card-text">
-                Price: Rs. {{ product.price }}
-              </p> 
-              <p>
-                Do you want to buy this? 
-                <a class="btn btn-primary" href="{% url 'shop:detailpage' product.pk %}">Click here</a>
-              </p>
-              </b>
-            </div>
-          </div>
+    <div class="col">
+      <div class="card h-100">
+        <img src="{{ product.image.url|safe }}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">
+            <p> Price : Rs. {{ product.price }} </p>
+            <p> Do you want to buy this? <a class="btn btn-primary" href="{% url 'shop:detailpage' product.pk %}">Click here</a> </p>
+          </p>
         </div>
-      {% endfor %}
-       
+      </div>
     </div>
+
+  {% endfor %}
+
+</div>
+
 <br>
 <p>
  <span class="current">
