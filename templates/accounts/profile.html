@@ -3,14 +3,28 @@
 {% block title %}Profile{% endblock title %}
 
 {% block base_template %}
+<div class="container">
+<div class="alert alert-secondary">
 
-{{ profile.first_name }}
-{{ user.username }}
-{{ user.email }}
+<div class="card border-success mb-3" >
+  <div class="card-header bg-transparent border-success"><h3 class="card-title">Hello {{ user.username }}</h3></div>
+  <div class="card-body text-success">
+    <h5 class="card-title">
+    <p> {{ profile.first_name }} {{ profile.last_name }}, You are awesome</p>
+    <p>Account Active since: {{ profile.activation_date }}</p></h5>
+  </div>
+  <div class="card-footer bg-transparent border-success">
+    <p>
+    <a class="btn btn-primary" href={% url 'password_change' %}>Change Password</a>
+    </p>   
+    <p>
+    {% if user.is_superuser %}
+    <a class="btn btn-warning" href = {% url 'shop:create' %}>Create New Product</a>
+    {% endif %}
 
-{% if user.is_superuser %}
-<a href = {% url 'shop:create' %}>Create New Entry for product </a>
-{% endif %}
+    </p>
+    
+  </div>
+</div>
 
-<a href={% url 'password_change' %}>Change Password</a>
 {% endblock %}

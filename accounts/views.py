@@ -18,7 +18,10 @@ from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
 # Create your views here.
 
 def user_login(request):
-    
+
+    if request.user.is_authenticated:
+        logout(request)
+
     if request.method == 'POST' :
         
         form = UserLoginForm(request.POST)
@@ -156,6 +159,9 @@ def manually_activate_account(request):
                     return redirect('accounts:manual_activation_failure')
 
             if user is None:
+                return redirect('accounts:signup_failure')
+
+            if user.is_active == True:
                 return redirect('accounts:signup_failure')
 
             current_site = get_current_site(request)

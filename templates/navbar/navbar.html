@@ -6,14 +6,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{% static 'icon/favicon.png' %}" type="image/icon type">
-
+    
     <!-- CSS only -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
      <title>
         {% block title %} Ecommerce {% endblock %}
      </title>
+     
+</style>
 </head>
-<body>
+<body style="background-image: url({% static 'background/bg.jpg' %})">
 
   <b>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">

@@ -8,9 +8,9 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User,on_delete=models.CASCADE)
 
-    first_name = models.CharField(max_length=100,blank=True)
+    first_name = models.CharField(max_length=100,blank=True,default='')
 
-    last_name = models.CharField(max_length=100,blank=True)
+    last_name = models.CharField(max_length=100,blank=True,default='')
 
     activation_date = models.DateTimeField(blank=True,default=timezone.now)
     
