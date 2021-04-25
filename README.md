@@ -1,6 +1,6 @@
 # Ecommerce-WebApp
 
-This is a simple Ecommerce website implemented using Django 3.1 and Python 3.8 . It is hosted on Heroku. You can check the product here: [https//:ecommerce-debanjan.herokuapp.com/](https//:ecommerce-debanjan.herokuapp.com/)
+This is a simple Ecommerce website implemented using Django 3.1 and Python 3.8. It is hosted on Heroku. You can check the product here: [https//:ecommerce-debanjan.herokuapp.com/](https//:ecommerce-debanjan.herokuapp.com/)
 
 
 ### Screenshots of the app
@@ -22,9 +22,9 @@ Install Dependencies
 ```
 pip install -r requirements.txt
 ```
-Feel free to create your own virtual environment to manage all the requirements in one place.( Check the `DigitalOcean` link below: it contains setup instructions for virtual environment as well . I would highly encourage you to create a virtual environment so that your main workspace does not get clustered with unneccessary packages.)
+Feel free to create your own virtual environment to manage all the requirements in one place.( Check the `DigitalOcean` link below: it contains setup instructions for virtual environment as well. I would highly encourage you to create a virtual environment so that your main workspace does not get clustered with unneccessary packages.)
 
-Now you need to configure database (Postgres). Follow the steps below. Alternatively you can follow the steps from [DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-16-04)
+Now you need to configure database (Postgres). Follow the steps below. Alternatively, you can follow the steps from [DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-16-04)
 Steps: Enter these commands one by one in your terminal:
 ```
 sudo apt-get update
@@ -32,7 +32,7 @@ sudo apt-get install python3-pip python3-dev libpq-dev postgresql postgresql-con
 sudo -u postgres psql
 ```
 
-Now you will enter Postgres Session.Now run the following commands:
+Now you will enter Postgres Session. Now run the following commands:
 ```
 CREATE DATABASE ecommerce_database;
 CREATE USER admin WITH PASSWORD 'ecommerce';
@@ -91,4 +91,4 @@ python manage.py runserver
 ```
 
 ### Reason of Superuser profile page error on starting the application.
-On starting app, superuser will not have any profile because we created admin from terminal. So you need to go to django admin panel to create a profile page for him.
+On starting app, superuser will not have any profile because we created superuser from terminal. So you need to go to django admin panel to create a profile page for him.
