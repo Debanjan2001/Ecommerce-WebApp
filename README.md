@@ -19,7 +19,6 @@ cd <<Your Download Location Here>>/Ecommerce-Webapp
 ```
 
 Install Dependencies 
-
 ```
 pip install -r requirements.txt
 ```
@@ -78,10 +77,18 @@ python -c 'from django.core.management.utils import get_random_secret_key; print
 
 4. You will receive a secret key in the terminal when you run this command. Copy paste this key in place of `YOUR_SECRET_KEY` inside `private_settings.py`.
 
+5. After all these steps, now I would tell you why I asked you to use an alternate email. For django to use the smtp mail server and your email address for mailing, you need to do the following:
+
+6. Login with your email account.
+
+7. Go to this site: [https://myaccount.google.com/lesssecureapps](https://myaccount.google.com/lesssecureapps) and turn on `ALLOW LESS SECURE APPS`.
+
+8. `Some apps and devices use less secure sign-in technology, which makes your account vulnerable.` (According to Google). So Google recommends turning this off. But for this project I am using the service for simplicity.
+
 After all these steps , you can run the app. 
 ```
 python manage.py runserver
 ```
 
-### Superuser profile
+### Reason of Superuser profile page error on starting the application.
 On starting app, superuser will not have any profile because we created admin from terminal. So you need to go to django admin panel to create a profile page for him.
