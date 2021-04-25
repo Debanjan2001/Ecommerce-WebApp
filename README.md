@@ -91,4 +91,4 @@ python manage.py runserver
 ```
 
 ### Reason of Superuser profile page error on starting the application.
-On starting app, superuser will not have any profile because we created admin from terminal. So you need to go to django admin panel to create a profile page for him.
+On starting app, superuser will not have any profile because we created superuser from terminal. So you need to go to django admin panel to create a profile page for him.
