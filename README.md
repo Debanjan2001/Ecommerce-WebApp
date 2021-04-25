@@ -4,6 +4,7 @@ This is a simple Ecommerce website implemented using Django 3.1 and Python 3.8. 
 
 
 ### Screenshots of the app
+![ Ecommerce-WebApp Screenshots](Ecommerce.gif)
 
 ### Instructions to run it locally
 
