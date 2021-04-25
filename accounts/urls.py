@@ -17,7 +17,6 @@ urlpatterns = [
     path('manual_activation/',views.manually_activate_account,name = 'manual_activation'),
     path('manual_activation_failure/',views.manual_activation_failure,name = 'manual_activation_failure'),
 
-
 ]
 
 

@@ -32,7 +32,7 @@
     <div class="col">
       <div class="card h-100">
         <div class="ratio ratio-4x3">
-        <img src="{{ product.image.url|safe }}" class="card-img-top" style alt="...">
+        <img src="{{ product.image }}" class="card-img-top" style alt="...">
         </div>
         <div class="card-body">
           <h5 class="card-title">{{ product.name }}</h5>
@@ -51,7 +51,7 @@
 <br>
 <p>
  <span class="current">
-            <p class="h3">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+            <p class="h3 text-light">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
         </span></p>
 
 <div class="pagination">

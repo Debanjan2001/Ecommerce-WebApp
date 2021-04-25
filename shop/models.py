@@ -14,7 +14,7 @@ class Product(models.Model):
     description = models.TextField(blank=True,max_length=1000)
 
     #Image of the product
-    image = models.ImageField(upload_to = 'images/',default = 'images/default.png')
+    image = models.URLField(blank=True,null=True)
 
     def __str__(self):
         return self.name
